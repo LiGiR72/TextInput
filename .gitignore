@@ -3,3 +3,4 @@ out/
 target/
 .idea/
 src/basket.txt
+src/basket.bin

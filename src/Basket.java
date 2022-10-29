@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.Arrays;
 
 
-public class Basket {
+public class Basket implements Serializable {
     private long[] prices;
     private String[] names;
     private long[] basket;
@@ -24,34 +24,50 @@ public class Basket {
         this.basket = basket;
     }
 
-    static Basket loadFromTxt(File textFile) throws IOException {
-        long[] prices;
-        String[] names;
-        long[] basket;
-        try (BufferedReader in = new BufferedReader(new FileReader(textFile))) {
-            prices = Arrays.stream(in.readLine().trim().split(" "))
-                    .mapToLong(Long::parseLong)
-                    .toArray();
-            names = in.readLine().trim().split(" ");
-            basket = Arrays.stream(in.readLine().trim().split(" "))
-                    .mapToLong(Long::parseLong)
-                    .toArray();
-            return new Basket(prices, names, basket);
+    static Basket loadFromTxt(File textFile) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(textFile))) {
+            return  (Basket)in.readObject();
         }
+
     }
 
     public boolean addToCart(int productNum, int amount) {
         if ((productNum > prices.length) || (amount < 0)) {
             return false;
         }
-        basket[productNum + 1] += amount;
+        basket[productNum - 1] += amount;
         try{
             saveTxt();
         }catch(IOException exception){
-            System.out.println("Оштбка записи");
+            System.out.println("Ошибка записи");
             return false;
         }
         return true;
+    }
+
+    public void printCart() {
+        long amount = 0;
+        for (int i = 0; i < prices.length; i++) {
+            if (basket[i] == 0) {
+                continue;
+            }
+            System.out.println(names[i] + " - " + basket[i] + " .шт - " + (basket[i] * prices[i]) + " руб.");
+            amount += basket[i] * prices[i];
+        }
+        System.out.println("Сумма покупки - " + amount);
+    }
+
+    public void saveTxt(File textFile) throws IOException {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(textFile))) {
+            out.writeObject(this);
+
+        }
+    }
+
+    public void saveTxt() throws IOException {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(in))) {
+            out.writeObject(this);
+        }
     }
 
     public long[] getBasket() {
@@ -68,55 +84,5 @@ public class Basket {
 
     public void setFile(File in) {
         this.in = in;
-    }
-
-    public void printCart() {
-        long amount = 0;
-        for (int i = 0; i < prices.length; i++) {
-            if (basket[i] == 0) {
-                continue;
-            }
-            System.out.println(names[i] + " - " + basket[i] + " .шт - " + (basket[i] * prices[i]) + " руб.");
-            amount += basket[i] * prices[i];
-        }
-        System.out.println("Сумма покупки - " + amount);
-    }
-
-    public boolean saveTxt(File textFile) throws IOException {
-        try (PrintWriter out = new PrintWriter(textFile)) {
-
-            for (long num : prices) {
-                out.print(num + " ");
-            }
-            out.println();
-            for (String num : names) {
-                out.print(num + " ");
-            }
-            out.println();
-            for (long num : basket) {
-                out.print(num + " ");
-            }
-
-        }
-        return true;
-    }
-
-    public boolean saveTxt() throws IOException {
-        try (PrintWriter out = new PrintWriter(in)) {
-
-            for (long num : prices) {
-                out.print(num + " ");
-            }
-            out.println();
-            for (String num : names) {
-                out.print(num + " ");
-            }
-            out.println();
-            for (long num : basket) {
-                out.print(num + " ");
-            }
-
-        }
-        return true;
     }
 }
