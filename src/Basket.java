@@ -54,22 +54,6 @@ public class Basket {
         return true;
     }
 
-    public long[] getBasket() {
-        return basket;
-    }
-
-    public long[] getPrices() {
-        return prices;
-    }
-
-    public String[] getNames() {
-        return names;
-    }
-
-    public void setFile(File in) {
-        this.in = in;
-    }
-
     public void printCart() {
         long amount = 0;
         for (int i = 0; i < prices.length; i++) {
@@ -96,7 +80,6 @@ public class Basket {
             for (long num : basket) {
                 out.print(num + " ");
             }
-
         }
         return true;
     }
@@ -118,5 +101,21 @@ public class Basket {
 
         }
         return true;
+    }
+
+    public long[] getBasket() {
+        return basket;
+    }
+
+    public long[] getPrices() {
+        return prices;
+    }
+
+    public String[] getNames() {
+        return names;
+    }
+
+    public void setFile(File in) {
+        this.in = in;
     }
 }
