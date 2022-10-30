@@ -13,8 +13,7 @@ public class Main {
             basket = new Basket(prices, groceries);
             basket.setFile(in);
         } else {
-            basket = Basket.loadFromTxt(in);
-            basket.setFile(in);
+            basket = Basket.loadFromBin(in);
         }
         basket.printCart();
         basket.addToCart(2, 10);

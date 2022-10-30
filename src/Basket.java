@@ -24,7 +24,7 @@ public class Basket implements Serializable {
         this.basket = basket;
     }
 
-    static Basket loadFromTxt(File textFile) throws IOException, ClassNotFoundException {
+    static Basket loadFromBin(File textFile) throws IOException, ClassNotFoundException {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(textFile))) {
             return  (Basket)in.readObject();
         }
@@ -37,7 +37,7 @@ public class Basket implements Serializable {
         }
         basket[productNum - 1] += amount;
         try{
-            saveTxt();
+            saveBin();
         }catch(IOException exception){
             System.out.println("Ошибка записи");
             return false;
@@ -57,14 +57,13 @@ public class Basket implements Serializable {
         System.out.println("Сумма покупки - " + amount);
     }
 
-    public void saveTxt(File textFile) throws IOException {
+    public void saveBin(File textFile) throws IOException {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(textFile))) {
             out.writeObject(this);
-
         }
     }
 
-    public void saveTxt() throws IOException {
+    public void saveBin() throws IOException {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(in))) {
             out.writeObject(this);
         }
