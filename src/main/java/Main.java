@@ -39,7 +39,7 @@ public class Main {
                         System.out.println("Неверный номер товара");
                         break;
                     }
-                    System.out.println("Товар - " + basket.getNames()[id - 1] + "Введите количество");
+                    System.out.println("Товар - " + basket.getNames()[id - 1] + ". Введите количество ");
                     int num =  Integer.parseInt(scanner.nextLine().trim());
                     basket.addToCart(id, num, settings);
                     if(settings.getLogEnabled()){
