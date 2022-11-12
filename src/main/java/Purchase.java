@@ -14,4 +14,5 @@ public class Purchase {
     public int getQuantity() {
         return quantity;
     }
+
 }

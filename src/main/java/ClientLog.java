@@ -10,20 +10,16 @@ import java.util.List;
 
 public class ClientLog {
     private List<Purchase> logJournal = new ArrayList<>();
-    private File file;
 
     public ClientLog(File file) throws IOException {
-        this.file = file;
-        if(!file.exists()){
-            file.createNewFile();
-        }
+
     }
 
     public void log(int productNum, int amount){
         logJournal.add(new Purchase(productNum, amount));
     }
 
-    public void exportAsCSV() throws Exception{
+    public void exportAsCSV(File file) throws Exception{
         try(FileWriter writer = new FileWriter(file, true)){
             StatefulBeanToCsv<Purchase> csv =
                     new StatefulBeanToCsvBuilder<Purchase>(writer)

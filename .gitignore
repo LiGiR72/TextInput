@@ -2,5 +2,7 @@
 out/
 target/
 .idea/
-src/basket.txt
-src/basket.bin
+basket.txt
+basket.json
+basket.bin
+client.csv
