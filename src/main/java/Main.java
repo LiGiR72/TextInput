@@ -16,33 +16,33 @@ public class Main {
             long[] prices = {70, 30, 100, 35, 40};
             basket = new Basket(prices, groceries);
             basket.setFile(out);
-        } else  {
-            if(settings.getLoadFileFormat().equals("json")){
+        } else {
+            if (settings.getLoadFileFormat().equals("json")) {
                 basket = Basket.loadJSON(in);
                 basket.setFile(out);
 
-            }else if(settings.getLoadFileFormat().equals("txt")){
+            } else if (settings.getLoadFileFormat().equals("txt")) {
                 basket = Basket.loadFromTxt(in);
                 basket.setFile(out);
 
             }
         }
 
-        while(true){
+        while (true) {
             System.out.println("Введите команду:");
             String input = scanner.nextLine().trim().toLowerCase();
             switch (input) {
                 case "add":
                     System.out.println("Ведите номер товара");
                     int id = Integer.parseInt(scanner.nextLine());
-                    if(id > basket.getNames().length || basket.getNames().length <= 0){
+                    if (id > basket.getNames().length || basket.getNames().length <= 0) {
                         System.out.println("Неверный номер товара");
                         break;
                     }
                     System.out.println("Товар - " + basket.getNames()[id - 1] + ". Введите количество ");
-                    int num =  Integer.parseInt(scanner.nextLine().trim());
+                    int num = Integer.parseInt(scanner.nextLine().trim());
                     basket.addToCart(id, num, settings);
-                    if(settings.getLogEnabled()){
+                    if (settings.getLogEnabled()) {
                         logger.log(id, num);
                     }
                     break;

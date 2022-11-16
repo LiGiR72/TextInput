@@ -1,6 +1,6 @@
 public class Purchase {
-    private int id;
-    private int quantity;
+    private final int id;
+    private final int quantity;
 
     public Purchase(int id, int quantity) {
         this.id = id;

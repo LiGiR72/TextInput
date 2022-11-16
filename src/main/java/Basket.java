@@ -27,6 +27,7 @@ public class Basket {
     public Basket() throws IOException {
 
     }
+
     public static Basket loadFromTxt(File textFile) throws IOException {
         long[] prices;
         String[] names;
@@ -43,7 +44,7 @@ public class Basket {
         }
     }
 
-    public static Basket loadJSON(File textFile) throws IOException{
+    public static Basket loadJSON(File textFile) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(textFile, Basket.class);
     }
@@ -53,12 +54,12 @@ public class Basket {
             return;
         }
         basket[productNum - 1] += amount;
-        if(settings.getSaveEnabled()) {
+        if (settings.getSaveEnabled()) {
             try {
                 if (settings.getSaveFileFormat().equals("json")) {
-                    saveJSON();
+                    saveJSON(out);
                 } else if (settings.getSaveFileFormat().equals("txt")) {
-                    saveTxt();
+                    saveTxt(out);
                 }
 
             } catch (IOException exception) {
@@ -79,29 +80,30 @@ public class Basket {
         System.out.println("Сумма покупки - " + amount);
     }
 
-    public void saveJSON() throws IOException{
-        if(!out.exists()){
+    public void saveJSON(File out) throws IOException {
+        if (!out.exists()) {
             out.createNewFile();
         }
-       ObjectMapper mapper = new ObjectMapper();
-       mapper.writeValue(out, this);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(out, this);
     }
-    public boolean saveTxt() throws IOException {
-        if(!out.exists()){
+
+    public boolean saveTxt(File out) throws IOException {
+        if (!out.exists()) {
             out.createNewFile();
         }
-        try (PrintWriter out = new PrintWriter(this.out)) {
+        try (PrintWriter writer = new PrintWriter(this.out)) {
 
             for (long num : prices) {
-                out.print(num + " ");
+                writer.print(num + " ");
             }
-            out.println();
+            writer.println();
             for (String num : names) {
-                out.print(num + " ");
+                writer.print(num + " ");
             }
-            out.println();
+            writer.println();
             for (long num : basket) {
-                out.print(num + " ");
+                writer.print(num + " ");
             }
         }
         return true;

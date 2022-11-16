@@ -9,32 +9,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientLog {
-    private List<Purchase> logJournal = new ArrayList<>();
+    private final List<Purchase> logJournal = new ArrayList<>();
 
     public ClientLog(File file) throws IOException {
 
     }
 
-    public void log(int productNum, int amount){
+    private static ColumnPositionMappingStrategy<Purchase> getStrategy() {
+        ColumnPositionMappingStrategy<Purchase> strategy = new ColumnPositionMappingStrategy<>();
+        strategy.setType(Purchase.class);
+        strategy.setColumnMapping("id", "quantity");
+        return strategy;
+    }
+
+    public void log(int productNum, int amount) {
         logJournal.add(new Purchase(productNum, amount));
     }
 
-    public void exportAsCSV(File file) throws Exception{
-        try(FileWriter writer = new FileWriter(file, true)){
+    public void exportAsCSV(File file) throws Exception {
+        try (FileWriter writer = new FileWriter(file, true)) {
             StatefulBeanToCsv<Purchase> csv =
                     new StatefulBeanToCsvBuilder<Purchase>(writer)
-                    .withSeparator(',')
-                    .withMappingStrategy(getStrategy())
-                    .build();
+                            .withSeparator(',')
+                            .withMappingStrategy(getStrategy())
+                            .build();
             csv.write(logJournal);
         }
-    }
-
-    private static ColumnPositionMappingStrategy<Purchase> getStrategy(){
-        ColumnPositionMappingStrategy<Purchase> strategy = new ColumnPositionMappingStrategy<>();
-        strategy.setType(Purchase.class);
-        strategy.setColumnMapping("id","quantity");
-        return strategy;
     }
 
 }
